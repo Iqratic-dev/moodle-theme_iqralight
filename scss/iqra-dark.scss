@@ -1,0 +1,257 @@
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+// Dark mode, on the learner pages listed in theme_iqralight\local\mode::DARK_PAGES only:
+// every other page stays light, so that no page is ever half dark.
+//
+// Four layers: Bootstrap's colour variables, Moodle's fixed colours (generated in
+// iqra-dark-core.scss), Iqralight's own components, and a light "paper" surface for
+// teachers' content, whose colours were chosen for a white page.
+
+$dark-ground: #0e1513;
+$dark-surface: #17211e;
+$dark-surface-2: #1e2a26;
+$dark-line: #2a3733;
+$dark-ink: #e6eeeb;
+$dark-muted: #a7b8b2;
+$dark-link: mix($iqra-brand, #fff, 45%);
+$dark-brand-tint: mix($iqra-brand, $dark-surface, 30%);
+$paper: #f7f8f7;
+
+@mixin iqra-dark {
+    --bs-body-bg: #{$dark-ground};
+    --bs-body-bg-rgb: #{red($dark-ground)}, #{green($dark-ground)}, #{blue($dark-ground)};
+    --bs-body-color-rgb: #{red($dark-ink)}, #{green($dark-ink)}, #{blue($dark-ink)};
+    --bs-secondary-bg-rgb: #{red($dark-surface)}, #{green($dark-surface)}, #{blue($dark-surface)};
+    --bs-tertiary-bg-rgb: #{red($dark-surface-2)}, #{green($dark-surface-2)}, #{blue($dark-surface-2)};
+    --bs-emphasis-color-rgb: #{red($dark-ink)}, #{green($dark-ink)}, #{blue($dark-ink)};
+    --bs-body-color: #{$dark-ink};
+    --bs-emphasis-color: #{$dark-ink};
+    --bs-heading-color: #{$dark-ink};
+    --bs-secondary-color: #{$dark-muted};
+    --bs-secondary-bg: #{$dark-surface};
+    --bs-tertiary-bg: #{$dark-surface-2};
+    --bs-border-color: #{$dark-line};
+    --bs-link-color: #{$dark-link};
+    --bs-link-hover-color: #{mix($iqra-brand, #fff, 30%)};
+    color-scheme: dark;
+    background-color: $dark-ground;
+    color: $dark-ink;
+
+    @include iqra-dark-core;
+
+    #page,
+    #page.drawers,
+    #page-wrapper {
+        background-color: $dark-ground;
+    }
+
+    // Surfaces.
+    .navbar.fixed-top,
+    .drawer,
+    .card,
+    .course-content .course-section,
+    .dropdown-menu,
+    .modal-content,
+    .popover,
+    .list-group-item,
+    .moremenu .dropdown-menu,
+    .block_myoverview .course-card,
+    .login-container {
+        border-color: $dark-line;
+        background-color: $dark-surface;
+        color: $dark-ink;
+    }
+
+    // Bootstrap's background utilities carry !important.
+    .bg-white,
+    .bg-light,
+    .bg-body {
+        background-color: $dark-surface !important; // stylelint-disable-line declaration-no-important
+    }
+
+    &#page-login-index .login-container,
+    #page-footer {
+        border-color: $dark-line;
+        background-color: $dark-surface;
+        color: $dark-ink;
+    }
+
+    .form-control,
+    .form-select,
+    .custom-select {
+        border-color: $dark-line;
+        background-color: $dark-surface-2;
+        color: $dark-ink;
+    }
+
+    .table,
+    table.generaltable {
+        --bs-table-bg: #{$dark-surface};
+        --bs-table-color: #{$dark-ink};
+        --bs-table-striped-bg: #{$dark-surface-2};
+        --bs-table-hover-bg: #{$dark-surface-2};
+        border-color: $dark-line;
+        color: $dark-ink;
+    }
+
+    .btn-secondary {
+        border-color: $dark-line;
+        background-color: $dark-surface-2;
+        color: $dark-ink;
+    }
+
+    a:not(.btn):not(.dropdown-item):not(.iqra-bottomnav-item):not(.iqra-resume-cta):not(.iqra-activitynav-next) {
+        color: $dark-link;
+    }
+
+    .text-muted,
+    .text-body-secondary,
+    .iqra-choice-help,
+    .iqra-modedialog-intro {
+        color: $dark-muted !important; // stylelint-disable-line declaration-no-important
+    }
+
+    // Bootstrap draws the menu icon as an image with a dark stroke.
+    .navbar-toggler-icon {
+        filter: invert(0.9);
+    }
+
+    .navbar .icon,
+    .navbar .btn-icon,
+    .navbar .nav-link,
+    .drawertoggle .icon {
+        color: $dark-ink;
+    }
+
+    // Activity icons are drawn for a light background: they keep a light pill.
+    .activityiconcontainer {
+        border-radius: 0.75rem;
+        background-color: $dark-ink;
+    }
+
+    // Iqralight's own components.
+    .iqra-bottomnav {
+        border-top-color: $dark-line;
+        background-color: $dark-surface;
+    }
+
+    .iqra-bottomnav-item {
+        color: $dark-muted;
+
+        &.active {
+            color: $dark-link;
+        }
+    }
+
+    .iqra-bottomnav-item.active .iqra-bottomnav-icon {
+        background-color: $dark-brand-tint;
+    }
+
+    .iqra-modechip,
+    .iqra-modedialog {
+        border-color: $dark-line;
+        background-color: $dark-surface;
+        color: $dark-ink;
+    }
+
+    .iqra-choice {
+        border-color: $dark-line;
+
+        &:has(input:checked) {
+            border-color: $dark-link;
+            background-color: $dark-brand-tint;
+        }
+    }
+
+    .iqra-saved {
+        background-color: $dark-brand-tint;
+        color: $dark-ink;
+    }
+
+    .iqra-activitynav-previous,
+    .iqra-verb {
+        color: $dark-link;
+    }
+
+    .iqra-chapter {
+        color: $dark-muted;
+    }
+
+    .filter-iqra-placeholder {
+        border-color: $dark-line;
+        background-color: $dark-surface-2;
+    }
+
+    .filter-iqra-label {
+        color: $dark-muted;
+    }
+
+    // Teachers' content keeps a light page: colours typed by hand and images with a
+    // transparent background stay readable.
+    .no-overflow,
+    .book_content,
+    .post-content-container,
+    .activity-altcontent,
+    .course-description-item {
+        padding: 0.75rem 1rem;
+        border-radius: 0.75rem;
+        --bs-body-color: #{$iqra-ink};
+        --bs-heading-color: #{$iqra-ink};
+        --bs-emphasis-color: #{$iqra-ink};
+        --bs-link-color: #{$iqra-brand};
+        background-color: $paper;
+        color: $iqra-ink;
+        color-scheme: light;
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            color: $iqra-ink;
+        }
+
+        a {
+            color: $iqra-brand;
+        }
+
+        .bg-white,
+        .bg-light {
+            background-color: #fff !important; // stylelint-disable-line declaration-no-important
+        }
+
+        .filter-iqra-placeholder {
+            border-color: #cbd6d2;
+            background-color: #eef2f0;
+        }
+
+        .filter-iqra-label {
+            color: #4a5b56;
+        }
+    }
+}
+
+// The scope repeats the iqra class so that it outranks Iqralight's own light rules.
+@media (prefers-color-scheme: dark) {
+    body.iqra.iqra-dark-auto {
+        @include iqra-dark;
+    }
+}
+
+body.iqra.iqra-dark-on {
+    @include iqra-dark;
+}

@@ -1,0 +1,16 @@
+{
+    "format": "iqralight-preset",
+    "version": 1,
+    "theme_iqralight": {
+        "defaultmode": "auto",
+        "savedata": "1",
+        "autotextonly": "0",
+        "serviceworker": "0",
+        "stats": "1",
+        "statsanonymous": "1",
+        "offlinereading": "0"
+    },
+    "filter_iqralight": {
+        "threshold": "300"
+    }
+}

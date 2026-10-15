@@ -1,0 +1,92 @@
+{{!
+    This file is part of Moodle - https://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_iqralight/modechip
+
+    Connection mode chip, and the dialog where the learner changes it.
+
+    Example context (json):
+    {
+        "label": "Data saver",
+        "economy": true,
+        "canchoose": true,
+        "intro": "Choose how Iqralight uses your data on this device.",
+        "textonlyhelp": "Every image waits for your tap.",
+        "hastextonly": true,
+        "textonly": false,
+        "contrast": false,
+        "easyread": false,
+        "choices": [
+            {"value": "auto", "label": "Automatic", "help": "Iqralight adapts to your connection.", "checked": true},
+            {"value": "economy", "label": "Data saver", "help": "Heavy content waits for your tap.", "checked": false},
+            {"value": "full", "label": "Load everything", "help": "Everything loads straight away.", "checked": false}
+        ]
+    }
+}}
+<div class="iqra-modechip-wrap d-flex align-items-center" data-region="theme_iqralight/mode">
+    <button type="button" class="iqra-modechip" data-action="theme_iqralight/open-mode" aria-haspopup="dialog"{{^canchoose}} disabled{{/canchoose}}>
+        <svg class="iqra-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11 20A7 7 0 0 1 4 13c0-6 7-9 16-9 0 9-3 16-9 16z"/><path d="M4 20c4-4 7-6 10-7"/></svg>
+        <span data-region="theme_iqralight/mode-label">{{label}}</span>
+    </button>
+    {{#canchoose}}
+    <dialog class="iqra-modedialog" data-region="theme_iqralight/mode-dialog" aria-labelledby="iqra-modedialog-title">
+        <form method="dialog" class="iqra-modedialog-form">
+            <h2 id="iqra-modedialog-title" class="iqra-modedialog-title">{{#str}}modetitle, theme_iqralight{{/str}}</h2>
+            <p class="iqra-modedialog-intro">{{intro}}</p>
+            <fieldset class="iqra-modedialog-choices">
+                <legend class="visually-hidden">{{#str}}modetitle, theme_iqralight{{/str}}</legend>
+                {{#choices}}
+                <label class="iqra-choice">
+                    <input type="radio" name="iqra-mode" value="{{value}}"{{#checked}} checked{{/checked}}>
+                    <span class="iqra-choice-text">
+                        <span class="iqra-choice-label">{{label}}</span>
+                        <span class="iqra-choice-help">{{help}}</span>
+                    </span>
+                </label>
+                {{/choices}}
+            </fieldset>
+            {{#hastextonly}}
+            <label class="iqra-choice">
+                <input type="checkbox" name="iqra-textonly"{{#textonly}} checked{{/textonly}}>
+                <span class="iqra-choice-text">
+                    <span class="iqra-choice-label">{{#str}}textonly, theme_iqralight{{/str}}</span>
+                    <span class="iqra-choice-help">{{textonlyhelp}}</span>
+                </span>
+            </label>
+            {{/hastextonly}}
+            <fieldset class="iqra-modedialog-choices">
+                <legend class="iqra-modedialog-subtitle">{{#str}}display, theme_iqralight{{/str}}</legend>
+                <label class="iqra-choice">
+                    <input type="checkbox" name="iqra-contrast"{{#contrast}} checked{{/contrast}}>
+                    <span class="iqra-choice-text">
+                        <span class="iqra-choice-label">{{#str}}contrast, theme_iqralight{{/str}}</span>
+                        <span class="iqra-choice-help">{{#str}}contrast_help, theme_iqralight{{/str}}</span>
+                    </span>
+                </label>
+                <label class="iqra-choice">
+                    <input type="checkbox" name="iqra-easyread"{{#easyread}} checked{{/easyread}}>
+                    <span class="iqra-choice-text">
+                        <span class="iqra-choice-label">{{#str}}easyread, theme_iqralight{{/str}}</span>
+                        <span class="iqra-choice-help">{{#str}}easyread_help, theme_iqralight{{/str}}</span>
+                    </span>
+                </label>
+            </fieldset>
+            <button type="submit" class="btn btn-primary iqra-modedialog-done">{{#str}}done, theme_iqralight{{/str}}</button>
+        </form>
+    </dialog>
+    {{/canchoose}}
+</div>

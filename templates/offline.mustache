@@ -1,0 +1,164 @@
+{{!
+    This file is part of Moodle - https://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_iqralight/offline
+
+    Self-contained offline page shown by the service worker when the network is lost.
+
+    Example context (json):
+    {
+        "lang": "en",
+        "dir": "ltr",
+        "brand": "#0B6E5A",
+        "sitename": "Learning site",
+        "title": "Connection lost",
+        "message": "The page will reload as soon as the connection is back.",
+        "retry": "Try again",
+        "reading": true,
+        "indexurl": "https://example.org/theme/iqralight/offline-index.json",
+        "keptlabel": "Available on this device",
+        "nonelabel": "Nothing has been kept on this device."
+    }
+}}
+<!DOCTYPE html>
+<html lang="{{lang}}" dir="{{dir}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}} | {{sitename}}</title>
+<style>
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f3f5f4;
+    color: #10201c;
+    font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans", "Noto Sans Arabic", sans-serif;
+}
+main {
+    max-width: 22rem;
+    margin: 1.5rem;
+    padding: 2rem 1.5rem;
+    border-radius: 1.5rem;
+    background: #fff;
+    text-align: center;
+}
+svg {
+    color: {{brand}};
+}
+h1 {
+    margin: 1rem 0 0.5rem;
+    font-size: 1.5rem;
+}
+p {
+    margin: 0 0 1.5rem;
+    color: #4a5b56;
+    line-height: 1.5;
+}
+section {
+    margin-top: 1.5rem;
+    text-align: start;
+}
+h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.0625rem;
+}
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+li {
+    padding: 0.625rem 0;
+    border-top: 1px solid #e1e8e5;
+}
+li a {
+    color: {{brand}};
+    font-weight: 600;
+}
+li small {
+    display: block;
+    color: #4a5b56;
+}
+button {
+    width: 100%;
+    min-height: 3.25rem;
+    border: 0;
+    border-radius: 1rem;
+    background: {{brand}};
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+}
+</style>
+</head>
+<body>
+<main>
+    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8.5a15 15 0 0 1 20 0"/><path d="M5 12a10 10 0 0 1 14 0"/><path d="M8.5 15.5a5 5 0 0 1 7 0"/><path d="M12 19h.01"/><path d="M3 3l18 18"/></svg>
+    <h1>{{title}}</h1>
+    <p>{{message}}</p>
+    <button type="button" id="iqra-retry">{{retry}}</button>
+    {{#reading}}
+    <section id="iqra-kept" hidden>
+        <h2>{{keptlabel}}</h2>
+        <ul id="iqra-kept-list"></ul>
+        <p id="iqra-kept-none" hidden>{{nonelabel}}</p>
+    </section>
+    {{/reading}}
+</main>
+<script>
+document.getElementById('iqra-retry').addEventListener('click', function() {
+    window.location.reload();
+});
+window.addEventListener('online', function() {
+    window.location.reload();
+});
+{{#reading}}
+(async function() {
+    if (!('caches' in window)) {
+        return;
+    }
+    var names = (await caches.keys()).filter(function(name) {
+        return name.indexOf('iqra-offline-') === 0;
+    });
+    var items = [];
+    for (var i = 0; i < names.length; i++) {
+        var response = await (await caches.open(names[i])).match('{{{indexurl}}}');
+        if (response) {
+            items = items.concat(await response.json());
+        }
+    }
+    var list = document.getElementById('iqra-kept-list');
+    items.forEach(function(item) {
+        var entry = document.createElement('li');
+        var link = document.createElement('a');
+        link.href = item.url;
+        link.textContent = item.title;
+        var detail = document.createElement('small');
+        detail.textContent = item.course + ' · ' + Math.max(1, Math.round(item.size / 1024)) + ' KB';
+        entry.append(link, detail);
+        list.append(entry);
+    });
+    document.getElementById('iqra-kept-none').hidden = items.length > 0;
+    document.getElementById('iqra-kept').hidden = false;
+})();
+{{/reading}}
+</script>
+</body>
+</html>

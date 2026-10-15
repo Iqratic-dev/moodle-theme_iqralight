@@ -1,0 +1,1091 @@
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+// Iqralight layer, compiled after Boost's default preset.
+//
+// Design rules: one action colour (the brand colour), clear surfaces, rounded
+// cards, system fonts, no decorative images. Everything here is CSS: it adds
+// no request to the page.
+
+$iqra-ink: #10201c;
+$iqra-muted: #4a5b56;
+$iqra-ground: #f3f5f4;
+$iqra-line: #e1e8e5;
+$iqra-line-strong: #cbd6d2;
+$iqra-saffron: #f2b441;
+$iqra-brand-soft: mix($iqra-brand, #fff, 12%);
+$iqra-brand-dark: mix($iqra-brand, #000, 80%);
+$iqra-bottomnav-height: 4.75rem;
+
+:root {
+    --iqra-brand: #{$iqra-brand};
+    --iqra-brand-soft: #{$iqra-brand-soft};
+    --iqra-brand-dark: #{$iqra-brand-dark};
+    --iqra-ink: #{$iqra-ink};
+    --iqra-muted: #{$iqra-muted};
+    --iqra-ground: #{$iqra-ground};
+    --iqra-line: #{$iqra-line};
+    --iqra-saffron: #{$iqra-saffron};
+}
+
+// Page transitions between Moodle pages (View Transitions, CSS only).
+// Browsers without support simply change page as before.
+// Stylelint does not know View Transitions yet (Chrome 126+); unsupported browsers ignore these rules.
+/* stylelint-disable csstree/validator, property-no-unknown */
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition-old(root) {
+    animation: 140ms ease-out both iqra-fade-out;
+}
+
+::view-transition-new(root) {
+    animation: 200ms ease-out both iqra-fade-in;
+}
+
+.navbar.fixed-top {
+    view-transition-name: iqra-navbar;
+}
+
+.iqra-bottomnav {
+    view-transition-name: iqra-bottomnav;
+}
+/* stylelint-enable csstree/validator, property-no-unknown */
+
+@keyframes iqra-fade-out {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes iqra-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation: none;
+    }
+}
+
+// Immediate feedback after a tap on a link (UX-06).
+html.iqra-navigating::before {
+    content: "";
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    z-index: 2000;
+    height: 3px;
+    width: 100%;
+    background: linear-gradient(90deg, $iqra-brand 0 40%, transparent 40%);
+    background-size: 250% 100%;
+    animation: iqra-progress 1.1s linear infinite;
+}
+
+@keyframes iqra-progress {
+    from {
+        background-position: 100% 0;
+    }
+    to {
+        background-position: -150% 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html.iqra-navigating::before {
+        animation: none;
+        background: $iqra-brand;
+        width: 40%;
+    }
+}
+
+// Base.
+body.iqra {
+    background-color: $iqra-ground;
+    color: $iqra-ink;
+    -webkit-font-smoothing: antialiased;
+}
+
+body.iqra #page,
+body.iqra #page.drawers {
+    background-color: $iqra-ground;
+}
+
+body.iqra {
+    h1,
+    .h1 {
+        font-weight: 700;
+        letter-spacing: -0.02em;
+    }
+
+    h2,
+    .h2,
+    h3,
+    .h3 {
+        font-weight: 700;
+        letter-spacing: -0.01em;
+    }
+
+    a:not(.btn):not(.dropdown-item):not(.nav-link):not(.list-group-item) {
+        text-underline-offset: 0.15em;
+    }
+
+    .text-muted,
+    .text-body-secondary {
+        color: $iqra-muted !important; // stylelint-disable-line declaration-no-important
+    }
+
+    :focus-visible {
+        outline: 3px solid $iqra-brand;
+        outline-offset: 2px;
+    }
+}
+
+// Top bar.
+body.iqra .navbar.fixed-top {
+    border-bottom: 1px solid $iqra-line;
+    box-shadow: none;
+}
+
+// Buttons and fields: large touch targets (UX-04).
+body.iqra {
+    .btn {
+        min-height: 2.75rem;
+        font-weight: 600;
+        padding-inline: 1.125rem;
+    }
+
+    .btn-primary {
+        box-shadow: 0 6px 16px rgba($iqra-brand, 0.22);
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background-color: $iqra-brand-dark;
+        border-color: $iqra-brand-dark;
+    }
+
+    .btn-secondary {
+        background-color: #fff;
+        border: 1.5px solid $iqra-line-strong;
+        color: $iqra-ink;
+    }
+
+    .form-control,
+    .form-select,
+    .custom-select {
+        min-height: 3rem;
+        border: 1.5px solid $iqra-line-strong;
+        font-size: 1rem;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: $iqra-brand;
+        box-shadow: 0 0 0 4px $iqra-brand-soft;
+    }
+
+    .card {
+        border-color: $iqra-line;
+        border-radius: 1.125rem;
+    }
+}
+
+// Connection mode chip and dialog.
+.iqra-modechip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 2.75rem;
+    margin-inline: 0.25rem;
+    padding: 0 0.75rem;
+    border: 1px solid $iqra-line-strong;
+    border-radius: 999px;
+    background: #fff;
+    color: $iqra-ink;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+
+    .iqra-icon {
+        color: $iqra-brand;
+    }
+
+    &:hover {
+        border-color: $iqra-brand;
+    }
+
+    &[disabled] {
+        opacity: 1;
+        cursor: default;
+    }
+}
+
+body.iqra-mode-full .iqra-modechip .iqra-icon {
+    color: $iqra-muted;
+}
+
+.iqra-modedialog:not([open]) {
+    display: none;
+}
+
+.iqra-modedialog {
+    position: fixed;
+    inset: 0;
+    z-index: 1060;
+    height: fit-content;
+    max-height: calc(100vh - 2rem);
+    margin: auto;
+    overflow-y: auto;
+    background: #fff;
+    width: calc(100vw - 2rem);
+    max-width: 26rem;
+    padding: 0;
+    border: 0;
+    border-radius: 1.5rem;
+    color: $iqra-ink;
+    box-shadow: 0 24px 64px rgba($iqra-ink, 0.28);
+
+    &::backdrop {
+        background: rgba($iqra-ink, 0.45);
+    }
+}
+
+.iqra-modedialog-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+}
+
+.iqra-modedialog-title {
+    margin: 0;
+    font-size: 1.375rem;
+    font-weight: 700;
+}
+
+.iqra-modedialog-intro {
+    margin: 0;
+    color: $iqra-muted;
+}
+
+.iqra-modedialog-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.iqra-choice {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    min-height: 3.75rem;
+    margin: 0;
+    padding: 0.875rem 1rem;
+    border: 1.5px solid $iqra-line-strong;
+    border-radius: 1rem;
+    cursor: pointer;
+
+    input {
+        width: 1.375rem;
+        height: 1.375rem;
+        margin-top: 0.125rem;
+        flex-shrink: 0;
+        accent-color: $iqra-brand;
+    }
+
+    &:has(input:checked) {
+        border: 2px solid $iqra-brand;
+        background: $iqra-brand-soft;
+    }
+}
+
+.iqra-choice-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.iqra-choice-label {
+    font-weight: 700;
+}
+
+.iqra-choice-help {
+    color: $iqra-muted;
+    font-size: 0.875rem;
+}
+
+.iqra-modedialog-done {
+    min-height: 3.25rem;
+    font-size: 1.0625rem;
+}
+
+// Greeting and "Resume" card on My courses.
+.iqra-greeting {
+    margin-block: 0.5rem 1.25rem;
+}
+
+.iqra-greeting-title {
+    margin: 0;
+    font-size: 1.75rem;
+    line-height: 1.2;
+}
+
+.iqra-saved {
+    display: inline-block;
+    margin: 0.5rem 0 0;
+    padding: 0.375rem 0.75rem;
+    border-radius: 999px;
+    background: $iqra-brand-soft;
+    color: $iqra-brand-dark;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+body.iqra-home #page-header {
+    display: none;
+}
+
+.iqra-resume {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 40rem;
+    margin-block-end: 2rem;
+    padding: 1.375rem 1.25rem 1.25rem;
+    border-radius: 1.5rem;
+    background: $iqra-brand;
+    color: #fff;
+    box-shadow: 0 10px 24px rgba($iqra-brand, 0.25);
+
+    p {
+        margin: 0;
+    }
+}
+
+.iqra-resume-kicker {
+    font-size: 0.875rem;
+    font-weight: 600;
+    opacity: 0.92;
+}
+
+.iqra-resume-course {
+    margin: 0;
+    color: #fff;
+    font-size: 1.375rem;
+    line-height: 1.3;
+}
+
+.iqra-resume-where {
+    font-size: 0.9375rem;
+    opacity: 0.95;
+
+    // Margins rather than gap: browsers before 2021 ignore gap in flex layouts.
+    span + span {
+        margin-inline-start: 0.5rem;
+    }
+}
+
+.iqra-resume-activity {
+    font-weight: 600;
+}
+
+.iqra-progress {
+    display: flex;
+    height: 0.5rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.iqra-progress-bar {
+    border-radius: 999px;
+    background: $iqra-saffron;
+}
+
+.iqra-resume-progress {
+    font-size: 0.875rem;
+}
+
+.iqra-resume-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    min-height: 3.25rem;
+    margin-top: 0.25rem;
+    border-radius: 0.875rem;
+    background: #fff;
+    color: $iqra-brand;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+        color: $iqra-brand-dark;
+        text-decoration: none;
+    }
+}
+
+.dir-rtl .iqra-flip-rtl {
+    transform: scaleX(-1);
+}
+
+// My courses: cards.
+body.iqra .block_myoverview {
+    // No overflow: hidden here, it would cut the card's menu.
+    .course-card,
+    .dashboard-card {
+        border: 1px solid $iqra-line;
+        border-radius: 1.125rem;
+        box-shadow: none;
+    }
+
+    .card-footer {
+        background: transparent !important; // stylelint-disable-line declaration-no-important
+    }
+
+    .coursename {
+        color: $iqra-ink;
+        font-weight: 600;
+    }
+
+    .progress {
+        height: 0.375rem;
+        border-radius: 999px;
+        background-color: $iqra-line;
+    }
+
+    .progress-bar {
+        background-color: $iqra-brand;
+    }
+}
+
+// Course images: chosen by the theme's script for the connection mode (see iqra.js).
+// Until it runs, or without an image, a neutral background is shown.
+body.iqra .block_myoverview {
+    .card-img-top,
+    .list-image,
+    .summary-image {
+        background-color: $iqra-line;
+        background-position: center;
+        background-size: cover;
+    }
+
+    .course-card .card-img-top {
+        border-radius: 1.125rem 1.125rem 0 0;
+    }
+}
+
+// Course page: sections and activities.
+body.iqra .course-content {
+    .course-section {
+        margin-block-end: 1rem;
+        padding: 1rem;
+        border: 1px solid $iqra-line;
+        border-radius: 1.25rem;
+        background: #fff;
+    }
+
+    .sectionname {
+        font-weight: 700;
+    }
+
+    .activity-item {
+        min-height: 4rem;
+        border-radius: 1rem;
+        padding: 0.75rem;
+    }
+
+    .activity-item:not(.activityinline) {
+        border-block-end: 1px solid $iqra-line;
+    }
+
+    .activityiconcontainer {
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 0.875rem;
+    }
+
+    .activityname a,
+    .activitytitle .aalink {
+        color: $iqra-ink;
+        font-weight: 600;
+    }
+
+    .btn.btn-outline-secondary,
+    .completion-dialog .btn {
+        min-height: 2.5rem;
+    }
+}
+
+// Activity navigation: one large "Next" button (RG-6.2).
+body.iqra .activity-navigation {
+    margin-block: 1.5rem;
+
+    #next-activity-link,
+    #prev-activity-link {
+        display: inline-flex;
+        align-items: center;
+        min-height: 3.25rem;
+        padding-inline: 1.25rem;
+        border-radius: 1rem;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    #next-activity-link {
+        background: $iqra-brand;
+        color: #fff;
+    }
+
+    #prev-activity-link {
+        background: #fff;
+        border: 1.5px solid $iqra-line-strong;
+        color: $iqra-ink;
+    }
+}
+
+@media (max-width: 575.98px) {
+    body.iqra .activity-navigation #next-activity-link {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+// Login page.
+body.iqra#page-login-index {
+    .login-wrapper {
+        min-height: 100vh;
+    }
+
+    .login-container {
+        max-width: 26rem;
+        padding: 2rem 1.5rem;
+        border: 0;
+        border-radius: 1.75rem;
+        background: #fff;
+        box-shadow: 0 12px 40px rgba($iqra-ink, 0.08);
+    }
+
+    .login-logo {
+        margin-block-end: 1.5rem;
+    }
+
+    .login-heading {
+        font-size: 1.75rem;
+        font-weight: 700;
+    }
+
+    .login-form .form-control {
+        min-height: 3.375rem;
+        border-radius: 0.875rem;
+        font-size: 1.0625rem;
+    }
+
+    #loginbtn {
+        width: 100%;
+        min-height: 3.5rem;
+        border-radius: 1rem;
+        font-size: 1.125rem;
+        font-weight: 700;
+    }
+
+    .login-form-forgotpassword {
+        text-align: center;
+
+        a {
+            display: inline-block;
+            padding: 0.75rem;
+            font-weight: 600;
+        }
+    }
+
+    .login-identityprovider-btn {
+        min-height: 3rem;
+        border: 1.5px solid $iqra-line-strong;
+        border-radius: 1rem;
+    }
+}
+
+// Bottom navigation bar for learners (UX-07), on small screens only.
+.iqra-bottomnav {
+    display: none;
+}
+
+@media (max-width: 991.98px) {
+    .iqra-bottomnav {
+        position: fixed;
+        inset-inline: 0;
+        inset-block-end: 0;
+        z-index: 1030;
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        /* stylelint-disable csstree/validator -- env() keeps the bar above the phone's home indicator. */
+        height: calc(#{$iqra-bottomnav-height} + env(safe-area-inset-bottom, 0));
+        padding: 0.5rem 0.75rem env(safe-area-inset-bottom, 0);
+        /* stylelint-enable csstree/validator */
+        border-top: 1px solid $iqra-line;
+        background: #fff;
+    }
+
+    body.iqra-has-bottomnav {
+        #page,
+        #page.drawers {
+            padding-block-end: calc(#{$iqra-bottomnav-height} + 1rem);
+        }
+
+        #page-footer .btn-footer-popover,
+        #page-footer .btn-footer-communication,
+        .btn-footer-popover {
+            bottom: calc(#{$iqra-bottomnav-height} + 1rem) !important; // stylelint-disable-line declaration-no-important
+        }
+    }
+}
+
+.iqra-bottomnav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    min-width: 5.5rem;
+    color: $iqra-muted;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+        color: $iqra-ink;
+        text-decoration: none;
+    }
+
+    &.active {
+        color: $iqra-brand;
+        font-weight: 700;
+    }
+}
+
+.iqra-bottomnav-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.75rem;
+    height: 2rem;
+    border-radius: 999px;
+    transition: background-color 150ms ease;
+
+    .active & {
+        background: $iqra-brand-soft;
+    }
+}
+
+.iqra-badge {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0.625rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.125rem;
+    height: 1.125rem;
+    padding: 0 0.25rem;
+    border-radius: 999px;
+    background: #b3261e;
+    color: #fff;
+    font-size: 0.6875rem;
+    font-weight: 700;
+}
+
+// Display options chosen by the learner.
+.iqra-modedialog-subtitle {
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+// High contrast (UX-12): AAA-level contrast, borders and underlines that do not
+// rely on colour alone.
+$iqra-brand-contrast: mix($iqra-brand, #000, 55%);
+
+body.iqra-contrast {
+    background-color: #fff;
+    color: #000;
+
+    #page,
+    #page.drawers {
+        background-color: #fff;
+    }
+
+    .text-muted,
+    .text-body-secondary,
+    .iqra-choice-help,
+    .iqra-bottomnav-item,
+    .iqra-modedialog-intro,
+    .filter-iqra-label {
+        color: #000 !important; // stylelint-disable-line declaration-no-important
+    }
+
+    a:not(.btn) {
+        color: $iqra-brand-contrast;
+        text-decoration: underline;
+    }
+
+    .btn-primary,
+    .iqra-resume,
+    #next-activity-link {
+        background-color: $iqra-brand-contrast;
+        border-color: $iqra-brand-contrast;
+        box-shadow: none;
+    }
+
+    .card,
+    .course-section,
+    .form-control,
+    .form-select,
+    .btn-secondary,
+    .iqra-modechip,
+    .iqra-choice,
+    .filter-iqra-placeholder,
+    .block_myoverview .course-card {
+        border: 2px solid #000;
+    }
+
+    .iqra-bottomnav {
+        border-top: 2px solid #000;
+    }
+
+    .iqra-bottomnav-item.active {
+        color: $iqra-brand-contrast;
+        text-decoration: underline;
+    }
+
+    :focus-visible {
+        outline: 4px solid #000;
+        outline-offset: 2px;
+        box-shadow: 0 0 0 6px #fff;
+    }
+}
+
+// Easy reading (UX-13): larger text and touch targets, and the Listen button.
+body.iqra-easyread {
+    font-size: 1.125rem;
+    line-height: 1.7;
+
+    .btn {
+        min-height: 3.25rem;
+        font-size: 1.0625rem;
+    }
+
+    .iqra-bottomnav-item {
+        font-size: 0.875rem;
+    }
+
+    .iqra-bottomnav-icon svg {
+        width: 1.75rem;
+        height: 1.75rem;
+    }
+
+    .activityiconcontainer {
+        width: 3.25rem;
+        height: 3.25rem;
+    }
+}
+
+.iqra-listen {
+    position: fixed;
+    inset-inline-end: 1rem;
+    inset-block-end: 1rem;
+    z-index: 1031;
+    min-height: 2.75rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    box-shadow: 0 4px 12px rgba($iqra-ink, 0.2);
+    font-size: 1rem;
+}
+
+// The Listen button reads the page: it steps aside while a drawer (messaging,
+// course index, menu) covers the page.
+body:has(.drawer.show, [data-region="right-hand-drawer"]:not(.hidden)) .iqra-listen {
+    display: none;
+}
+
+@media (max-width: 991.98px) {
+    body.iqra-has-bottomnav .iqra-listen {
+        inset-block-end: calc(#{$iqra-bottomnav-height} + 0.75rem);
+    }
+
+    // Room at the bottom of the page, so that the button never covers the last content.
+    body.iqra-easyread.iqra-has-bottomnav #page {
+        padding-block-end: calc(#{$iqra-bottomnav-height} + 4.5rem);
+    }
+}
+
+.iqra-reading {
+    border-radius: 0.375rem;
+    background-color: $iqra-brand-soft;
+    outline: 2px solid $iqra-brand;
+    outline-offset: 2px;
+}
+
+// Activity navigation for learners (RG-6.2): one large "Next" button.
+.iqra-activitynav {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    max-width: 32rem;
+    margin: 2rem auto 1rem;
+}
+
+.iqra-activitynav-next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    min-height: 3.5rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 1rem;
+    background: $iqra-brand;
+    color: #fff;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+        background: $iqra-brand-dark;
+        color: #fff;
+        text-decoration: none;
+    }
+}
+
+.iqra-activitynav-previous {
+    align-self: center;
+    padding: 0.75rem;
+    font-weight: 600;
+}
+
+body.iqra-contrast .iqra-activitynav-next {
+    background: $iqra-brand-contrast;
+}
+
+// Setup wizard and presets.
+.iqra-swatch {
+    display: inline-block;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 999px;
+    vertical-align: middle;
+}
+
+.iqra-preset {
+    margin-block-end: 1rem;
+    border-radius: 1rem;
+}
+
+// Course page for learners (F4): action verb and size above each activity name,
+// "Chapter N" above each section title.
+.iqra-verb {
+    display: block;
+    color: $iqra-brand;
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+.iqra-chapter {
+    display: block;
+    flex-basis: 100%;
+    color: $iqra-muted;
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+// Moodle 5.2 lays the section title out as a flexible row: "Chapter N" goes above.
+body.iqra .course-section .sectionname {
+    flex-wrap: wrap;
+}
+
+// My courses: one large button per card (F3).
+.iqra-card-cta {
+    width: 100%;
+    margin-top: 0.75rem;
+}
+
+body.iqra-contrast .iqra-verb {
+    color: $iqra-brand-contrast;
+}
+
+// Profile pictures as initials in data saver mode (RG-9.1).
+.iqra-initials {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    color: #fff;
+    font-weight: 700;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+// Offline reading (EF-69): "Keep offline" button above the content.
+.iqra-keep {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-block-end: 1rem;
+}
+
+.iqra-keep-note {
+    margin-inline-start: 0.75rem;
+    color: $iqra-muted;
+    font-size: 0.875rem;
+}
+
+// Phones (checked in Chromium at 360 and 390 pixels): comfortable side margins, and
+// touch targets of at least 44 pixels for everything a learner taps often.
+@media (max-width: 767.98px) {
+    body.iqra #page.drawers .main-inner {
+        padding-inline: 1rem;
+    }
+
+    body.iqra .navbar .navbar-toggler,
+    body.iqra .navbar .popover-region-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 2.75rem;
+        min-height: 2.75rem;
+    }
+
+    body.iqra .breadcrumb-item a,
+    body.iqra #page-footer a,
+    body.iqra .course-section .sectionname a,
+    body.iqra #collapsesections,
+    body.iqra table th a,
+    body.iqra .block_myoverview .coursename {
+        display: inline-block;
+        padding-block: 0.625rem;
+    }
+
+    // My courses filters always wrap, whatever the Moodle release's markup (an older
+    // template kept them on one row, which widened the whole page on iPhone).
+    body.iqra .block_myoverview [data-region="filter"],
+    body.iqra .block_myoverview [data-region="filter"] > div {
+        flex-wrap: wrap;
+        row-gap: 0.5rem;
+    }
+
+    body.iqra .block_myoverview [data-region="filter"] .flex-grow-1 {
+        flex: 1 1 10rem;
+        min-width: 10rem;
+    }
+
+    // Last safety net: a learner page never scrolls sideways.
+    body.iqra-has-bottomnav #page-wrapper {
+        overflow-x: clip;
+    }
+
+    // On phones, learners do not customise their dashboard: the edit mode switch
+    // (shown to them from Moodle 5.2) would only take them out of Iqralight's interface.
+    body.iqra-has-bottomnav .editmode-switch-form {
+        display: none !important; // stylelint-disable-line declaration-no-important
+    }
+
+    // Header buttons of Moodle's messaging drawer, opened from the bottom bar.
+    body.iqra [data-region="message-drawer"] .closewidget a,
+    body.iqra [data-region="message-drawer"] [data-region="view-overview"] a,
+    body.iqra [data-region="message-drawer"] .header-container a,
+    body.iqra [data-region="message-drawer"] .header-container button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 2.75rem;
+        min-height: 2.75rem;
+    }
+}
+
+// Login page on phones: the card takes the whole width, without rounded corners.
+@media (max-width: 575.98px) {
+    body.iqra#page-login-index {
+        background-color: #fff;
+
+        .login-wrapper,
+        #page-wrapper {
+            background: #fff;
+        }
+
+        .login-container {
+            border-radius: 0;
+            box-shadow: none;
+            padding-inline: 1rem;
+        }
+
+        .login-container h2 {
+            font-size: 1.25rem;
+        }
+
+        .login-container a:not(.btn) {
+            display: inline-block;
+            padding-block: 0.625rem;
+        }
+    }
+}
+
+// A field and its button form one control (password and its "show" button, search
+// field and its button...): Iqralight's rounded corners must not break Bootstrap's groups.
+body.iqra .input-group {
+    > .form-control:not(:last-child),
+    > .form-select:not(:last-child) {
+        border-start-end-radius: 0;
+        border-end-end-radius: 0;
+    }
+
+    > .btn:not(:first-child),
+    > .input-group-text:not(:first-child) {
+        border-start-start-radius: 0;
+        border-end-start-radius: 0;
+    }
+
+    > .btn {
+        min-width: 2.75rem;
+        border: 1.5px solid $iqra-line-strong;
+        background-color: #fff;
+    }
+
+    > .btn:not(:first-child) {
+        border-inline-start: 0;
+    }
+}
+
+// Moodle's messaging drawer takes the whole screen on phones.
+@media (max-width: 575.98px) {
+    body.iqra [data-region="right-hand-drawer"].drawer {
+        width: 100%;
+    }
+}

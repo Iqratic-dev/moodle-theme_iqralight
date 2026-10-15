@@ -1,0 +1,44 @@
+{{!
+    This file is part of Moodle - https://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+}}
+{{!
+    @template theme_iqralight/bottomnav
+
+    Bottom navigation bar shown to learners on small screens: three choices, each with an icon and a word.
+
+    Example context (json):
+    {
+        "items": [
+            {"key": "courses", "iscourses": true, "label": "My courses", "url": "#", "active": true},
+            {"key": "messages", "ismessages": true, "label": "Messages", "url": "#", "badge": "2", "badgelabel": "2 unread conversations"},
+            {"key": "account", "isaccount": true, "label": "My account", "url": "#"}
+        ]
+    }
+}}
+<nav class="iqra-bottomnav d-print-none" aria-label="{{#str}}nav_label, theme_iqralight{{/str}}">
+    {{#items}}
+    <a class="iqra-bottomnav-item{{#active}} active{{/active}}" href="{{url}}"{{#active}} aria-current="page"{{/active}}{{#ismessages}} data-iqra-messages="1"{{/ismessages}}>
+        <span class="iqra-bottomnav-icon">
+            {{#iscourses}}<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7"/></svg>{{/iscourses}}
+            {{#ismessages}}<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>{{/ismessages}}
+            {{#isaccount}}<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>{{/isaccount}}
+            {{#badge}}<span class="iqra-badge" aria-hidden="true">{{badge}}</span>{{/badge}}
+        </span>
+        <span class="iqra-bottomnav-label">{{label}}</span>
+        {{#badgelabel}}<span class="visually-hidden">{{badgelabel}}</span>{{/badgelabel}}
+    </a>
+    {{/items}}
+</nav>
