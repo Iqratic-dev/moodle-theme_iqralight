@@ -68,7 +68,7 @@ class navigation {
             'active' => in_array($page->pagelayout, ['mycourses', 'mydashboard', 'course', 'incourse'], true),
         ];
         if (!empty($CFG->messaging)) {
-            $unread = \core_message\api::count_unread_conversations($USER);
+            $unread = self::unread_count();
             $items[] = [
                 'key' => 'messages',
                 'label' => get_string('nav_messages', 'theme_iqralight'),
@@ -88,5 +88,20 @@ class navigation {
             $item['is' . $item['key']] = true;
         }
         return ['items' => $items];
+    }
+
+    /**
+     * Unread conversations, counted at most every two minutes per session.
+     *
+     * @return int
+     */
+    protected static function unread_count(): int {
+        global $SESSION, $USER;
+        $cached = $SESSION->theme_iqralight_unread ?? null;
+        if (!$cached || $cached['user'] != $USER->id || time() - $cached['time'] > 120) {
+            $cached = ['user' => $USER->id, 'time' => time(), 'count' => \core_message\api::count_unread_conversations($USER)];
+            $SESSION->theme_iqralight_unread = $cached;
+        }
+        return (int) $cached['count'];
     }
 }

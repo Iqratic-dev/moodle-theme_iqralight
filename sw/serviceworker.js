@@ -38,6 +38,9 @@ const OFFLINE_PREFIX = PREFIX + 'offline-';
 const OFFLINE_INDEX = IQRA_ROOT + '/theme/iqralight/offline-index.json';
 const OFFLINE_MAX_AGE = 30 * 24 * 3600 * 1000;
 const COURSE_FILE = /\/pluginfile\.php\//;
+const KEEPABLE_PAGE = new RegExp('^' + IQRA_ROOT.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') +
+    '/mod/(page|book|resource)/view\\.php\\?');
+const KEEPABLE_FILE = new RegExp('^' + IQRA_ROOT.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '/pluginfile\\.php/');
 
 // Bytes served from the cache since a page last asked. Kept in memory only: if the
 // browser stops the worker, the figure is lost, so the counter can only under-count.
@@ -176,6 +179,11 @@ const keptCopy = async(request) => {
  * @returns {Object} Result for the page: ok, and reason when it failed.
  */
 const keep = async(data) => {
+    // Only this site's reading pages and course files, never any other address.
+    if (typeof data.url !== 'string' || !KEEPABLE_PAGE.test(data.url) || !Array.isArray(data.files) ||
+            !data.files.every((file) => typeof file === 'string' && KEEPABLE_FILE.test(file))) {
+        return {ok: false, reason: 'failed'};
+    }
     const cache = await caches.open(OFFLINE_PREFIX + data.key);
     const index = (await readIndex(cache)).filter((item) => item.url !== data.url);
     const stored = [];

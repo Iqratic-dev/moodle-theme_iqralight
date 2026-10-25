@@ -16,7 +16,6 @@
 
 namespace theme_iqralight\local;
 
-use core\context\module as context_module;
 
 /**
  * Course page for learners (F4): an action verb and the size of each activity,
@@ -102,8 +101,8 @@ class courseview {
         if ($modname === 'resource' && $cmid) {
             $file = self::main_file($cmid);
             if ($file) {
-                $key = strpos($file->get_mimetype(), 'video/') === 0 ? 'verb_watch' : 'verb_resource';
-                return get_string($key, 'theme_iqralight', display_size($file->get_filesize()));
+                $key = strpos($file->mimetype, 'video/') === 0 ? 'verb_watch' : 'verb_resource';
+                return get_string($key, 'theme_iqralight', display_size((int) $file->filesize));
             }
         }
         return get_string(in_array($modname, self::VERBS, true) ? 'verb_' . $modname : 'verb_default', 'theme_iqralight');
@@ -112,21 +111,33 @@ class courseview {
     /**
      * Main file of a resource, as Moodle chooses it (highest sort order).
      *
+     * The files of every resource of the course are read in one query, the first
+     * time one of them is needed.
+     *
      * @param int $cmid
-     * @return \stored_file|null
+     * @return \stdClass|null With filesize and mimetype.
      */
-    protected static function main_file(int $cmid): ?\stored_file {
+    protected static function main_file(int $cmid): ?\stdClass {
+        global $DB;
         if (!array_key_exists($cmid, self::$files)) {
-            $context = context_module::instance($cmid, IGNORE_MISSING);
-            $files = $context ? get_file_storage()->get_area_files(
-                $context->id,
-                'mod_resource',
-                'content',
-                0,
-                'sortorder DESC, id ASC',
-                false
-            ) : [];
-            self::$files[$cmid] = $files ? reset($files) : null;
+            $courseid = (int) $DB->get_field('course_modules', 'course', ['id' => $cmid]);
+            self::$files[$cmid] = null;
+            $records = $DB->get_recordset_sql(
+                "SELECT f.id, cm.id AS cmid, f.filesize, f.mimetype
+                   FROM {files} f
+                   JOIN {context} ctx ON ctx.id = f.contextid AND ctx.contextlevel = :level
+                   JOIN {course_modules} cm ON cm.id = ctx.instanceid
+                  WHERE cm.course = :course AND f.component = 'mod_resource' AND f.filearea = 'content'
+                        AND f.filename <> '.'
+               ORDER BY f.sortorder DESC, f.id ASC",
+                ['level' => CONTEXT_MODULE, 'course' => $courseid]
+            );
+            foreach ($records as $record) {
+                if (!isset(self::$files[$record->cmid])) {
+                    self::$files[$record->cmid] = (object) ['filesize' => $record->filesize, 'mimetype' => $record->mimetype];
+                }
+            }
+            $records->close();
         }
         return self::$files[$cmid];
     }

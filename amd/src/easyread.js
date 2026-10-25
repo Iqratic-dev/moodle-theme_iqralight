@@ -16,8 +16,8 @@
 /**
  * Easy reading: a Listen button that reads the page aloud with the phone's own voice.
  *
- * Uses the browser's speech synthesis: no audio file is downloaded. The button only
- * appears when the device has a voice for the page language. Paragraphs are read one
+ * Uses the device's own speech synthesis: no audio file is downloaded and no text leaves
+ * the device. The button only appears when the device has a voice for the page language. Paragraphs are read one
  * after the other and the one being read is highlighted.
  *
  * @module     theme_iqralight/easyread
@@ -31,12 +31,16 @@ const READING = 'iqra-reading';
 /**
  * A voice of the device for the page language, if any.
  *
+ * Only voices installed on the device are used: online voices (offered by some
+ * browsers) would send the text being read to a third-party service.
+ *
  * @param {string} lang Page language, such as "fr" or "ar".
  * @returns {SpeechSynthesisVoice|null}
  */
 const findVoice = (lang) => {
     const prefix = lang.toLowerCase().split(/[-_]/)[0];
-    return window.speechSynthesis.getVoices().find((voice) => voice.lang.toLowerCase().startsWith(prefix)) || null;
+    return window.speechSynthesis.getVoices()
+        .find((voice) => voice.localService && voice.lang.toLowerCase().startsWith(prefix)) || null;
 };
 
 /**

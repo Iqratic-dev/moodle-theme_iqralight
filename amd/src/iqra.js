@@ -432,8 +432,13 @@ export const init = (config) => {
     initOfflineGuard(config.offlinesubmit);
     initCourseImages();
     initMessagesLink();
-    if (config.learnerkey && navigator.serviceWorker && navigator.serviceWorker.controller) {
-        navigator.serviceWorker.controller.postMessage({type: 'iqra-user', key: config.learnerkey});
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+        if (config.learnerkey) {
+            navigator.serviceWorker.controller.postMessage({type: 'iqra-user', key: config.learnerkey});
+        } else if (config.clearoffline) {
+            // The session has ended: nothing kept for reading stays on the device.
+            navigator.serviceWorker.controller.postMessage({type: 'iqra-user', key: ''});
+        }
     }
     tellWorker(document.body.classList.contains('iqra-mode-full') ? 'full' : 'economy');
 };

@@ -112,6 +112,7 @@ class core_renderer extends \theme_boost\output\core_renderer {
             'savedata' => mode::browser_saves_data(),
             'textonly' => mode::text_only(),
             'learnerkey' => $this->iqra_learner_key(),
+            'clearoffline' => !isloggedin() && get_config('theme_iqralight', 'offlineclearonsessionend') !== '0',
             'offlinesubmit' => preg_match('/^(mod-quiz-|mod-assign-|login-)/', $this->page->pagetype) ? null :
                 \theme_iqralight\local\wording::get('offlinesubmit'),
             'listenstrings' => strpos($this->page->pagetype, 'mod-quiz-attempt') === 0 ? null : [

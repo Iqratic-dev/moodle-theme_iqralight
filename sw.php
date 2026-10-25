@@ -31,11 +31,10 @@ define('NO_DEBUG_DISPLAY', true);
 
 require(__DIR__ . '/../../config.php');
 
-$plugin = core_plugin_manager::instance()->get_plugin_info('theme_iqralight');
 $enabled = get_config('theme_iqralight', 'serviceworker') !== '0';
 $root = rtrim($CFG->wwwroot, '/');
 $scope = (string) parse_url($root, PHP_URL_PATH) . '/';
-$version = implode('-', [(int) $plugin->versiondisk, (int) $CFG->themerev, (int) $CFG->jsrev]);
+$version = implode('-', [(int) get_config('theme_iqralight', 'version'), (int) $CFG->themerev, (int) $CFG->jsrev]);
 
 $values = [
     'IQRA_VERSION' => json_encode($version),

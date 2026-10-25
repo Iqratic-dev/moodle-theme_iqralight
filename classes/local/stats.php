@@ -31,6 +31,9 @@ class stats {
     /** @var int Highest amount accepted in one report, per category (50 MB). */
     public const MAX_PER_REPORT = 52428800;
 
+    /** @var int Highest total recorded for one learner and one day (2 GB), whatever the browser reports. */
+    public const MAX_PER_DAY = 2147483648;
+
     /** @var int Default number of days learner rows are kept. */
     public const DEFAULT_RETENTION = 90;
 
@@ -77,6 +80,13 @@ class stats {
         $day = usergetmidnight($now, 99);
         $row = $DB->get_record('theme_iqralight_stats', ['userid' => $userid, 'day' => $day]);
         if ($row) {
+            // A learner cannot inflate the figures shown to funders: the day is capped.
+            $room = max(0, self::MAX_PER_DAY - (int) $row->cachebytes - (int) $row->mediabytes);
+            $cachebytes = min($cachebytes, $room);
+            $mediabytes = min($mediabytes, $room - $cachebytes);
+            if ($cachebytes + $mediabytes === 0) {
+                return;
+            }
             $row->cachebytes += $cachebytes;
             $row->mediabytes += $mediabytes;
             $row->timemodified = $now;

@@ -29,7 +29,7 @@
         "message": "The page will reload as soon as the connection is back.",
         "retry": "Try again",
         "reading": true,
-        "indexurl": "https://example.org/theme/iqralight/offline-index.json",
+        "indexurl": "\"https://example.org/theme/iqralight/offline-index.json\"",
         "keptlabel": "Available on this device",
         "nonelabel": "Nothing has been kept on this device."
     }
@@ -139,7 +139,7 @@ window.addEventListener('online', function() {
     });
     var items = [];
     for (var i = 0; i < names.length; i++) {
-        var response = await (await caches.open(names[i])).match('{{{indexurl}}}');
+        var response = await (await caches.open(names[i])).match({{{indexurl}}});
         if (response) {
             items = items.concat(await response.json());
         }

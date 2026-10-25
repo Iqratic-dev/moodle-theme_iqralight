@@ -152,6 +152,11 @@ class presets {
         if (strlen($content) > self::MAX_LOGO) {
             return [null, get_string('logotoolarge', 'theme_iqralight', display_size(strlen($content)))];
         }
+        // The content must really be a PNG or JPEG image, whatever its name says.
+        $type = (new \finfo(FILEINFO_MIME_TYPE))->buffer($content);
+        if (!in_array($type, ['image/png', 'image/jpeg'], true)) {
+            return [null, get_string('preseterror_logo', 'theme_iqralight')];
+        }
         return [['filename' => $filename, 'content' => $content], null];
     }
 
