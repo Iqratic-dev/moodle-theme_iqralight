@@ -21,6 +21,16 @@ courses use the width of the screen up to 1200 px, with the greeting beside the
 reading width of about 75 characters a line. The site logo is shown in the top bar,
 even when only the main logo has been uploaded.
 
+## Components
+
+One system on every page: three button styles (filled for the main action, tinted
+for the others, text for minor ones), fields with a visible frame, due-date labels
+that always carry a word, flat blocks with a hairline, a compact calendar block and a
+keyboard focus ring that is always visible. Colours are CSS variables (`--iqra-*`),
+redefined by the dark mode. The learner's home shows the greeting with the date and
+the data saved, a Resume band (course, activity, progress, Continue) and the three
+last visited courses.
+
 ## Your own SCSS
 
 *Advanced* tab of the theme settings: *Raw initial SCSS* (variables, compiled before the

@@ -340,76 +340,89 @@ body.iqra-mode-full .iqra-modechip .iqra-icon {
     font-size: 1.0625rem;
 }
 
-// Greeting and "Resume" card on My courses.
-.iqra-greeting {
-    margin-block: 0.5rem 1.25rem;
+// Learner's home: greeting and data saved, the Resume band, My courses (mockup
+// "Accueil redessiné"). Mobile first; iqra-desktop.scss gives it room.
+body.iqra-home #page-header {
+    display: none;
 }
 
-.iqra-greeting-date {
-    margin: 0.25rem 0 0;
-    color: $iqra-muted;
-    font-size: 0.9375rem;
+.iqra-home-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    margin-block: 0.5rem 1.5rem;
 }
 
 .iqra-greeting-title {
     margin: 0;
     font-size: 1.75rem;
+    font-weight: 700;
     line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+
+.iqra-greeting-date {
+    margin: 0.25rem 0 0;
+    color: var(--iqra-muted);
+    font-size: 0.9375rem;
 }
 
 .iqra-saved {
-    display: inline-block;
-    margin: 0.5rem 0 0;
-    padding: 0.375rem 0.75rem;
+    margin: 0;
+    padding: 0.5rem 0.875rem;
+    border: 1px solid var(--iqra-line);
     border-radius: 999px;
-    background: $iqra-brand-soft;
-    color: $iqra-brand-dark;
-    font-size: 0.875rem;
-    font-weight: 600;
+    background: var(--iqra-surface);
+    color: var(--iqra-muted);
+    font-size: 0.9375rem;
 }
 
-body.iqra-home #page-header {
-    display: none;
-}
-
+// The one bold element of the page.
 .iqra-resume {
     display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    max-width: 40rem;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 2rem;
     margin-block-end: 2rem;
-    padding: 1.375rem 1.25rem 1.25rem;
-    border-radius: 1.5rem;
+    padding: 1.25rem;
+    border-radius: 1.25rem;
     background: $iqra-brand;
     color: #fff;
-    box-shadow: 0 10px 24px rgba($iqra-brand, 0.25);
 
     p {
         margin: 0;
     }
 }
 
-.iqra-resume-kicker {
-    font-size: 0.875rem;
-    font-weight: 600;
-    opacity: 0.92;
+.iqra-resume-main {
+    flex: 3 1 18rem;
+    min-width: 0;
 }
 
-.iqra-resume-course {
-    margin: 0;
+.iqra-resume-meter {
+    flex: 2 1 12rem;
+    min-width: 0;
+}
+
+.iqra-resume-kicker {
+    font-size: 0.9375rem;
+    opacity: 0.9;
+}
+
+.iqra-resume .iqra-resume-course {
+    margin: 0.25rem 0 0;
     color: #fff;
     font-size: 1.375rem;
-    line-height: 1.3;
+    font-weight: 700;
+    line-height: 1.25;
 }
 
-.iqra-resume-where {
+.iqra-resume .iqra-resume-where {
+    margin-top: 0.25rem;
     font-size: 0.9375rem;
     opacity: 0.95;
-
-    // Margins rather than gap: browsers before 2021 ignore gap in flex layouts.
-    span + span {
-        margin-inline-start: 0.5rem;
-    }
 }
 
 .iqra-resume-activity {
@@ -421,25 +434,27 @@ body.iqra-home #page-header {
     height: 0.5rem;
     overflow: hidden;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.28);
 }
 
 .iqra-progress-bar {
     border-radius: 999px;
-    background: $iqra-saffron;
+    background: #fff;
 }
 
-.iqra-resume-progress {
+.iqra-resume .iqra-resume-progress {
+    margin-top: 0.5rem;
     font-size: 0.875rem;
+    opacity: 0.95;
 }
 
 .iqra-resume-cta {
     display: flex;
+    flex: 1 1 100%;
     align-items: center;
     justify-content: center;
-    gap: 0.625rem;
     min-height: 3.25rem;
-    margin-top: 0.25rem;
+    padding-inline: 2rem;
     border-radius: 0.875rem;
     background: #fff;
     color: $iqra-brand;
@@ -452,6 +467,128 @@ body.iqra-home #page-header {
         color: $iqra-brand-dark;
         text-decoration: none;
     }
+
+    // The brand ring would vanish on the brand band: a white one instead.
+    &:focus-visible {
+        outline-color: #fff;
+    }
+}
+
+.iqra-mycourses {
+    margin-block-end: 2rem;
+}
+
+.iqra-section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-block-end: 0.75rem;
+}
+
+.iqra-section-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.iqra-section-link {
+    padding-block: 0.625rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+.iqra-coursegrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.iqra-coursecard {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--iqra-line);
+    border-radius: 1rem;
+    background: var(--iqra-surface);
+    color: var(--iqra-ink);
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+        border-color: var(--iqra-line-strong);
+        color: var(--iqra-ink);
+        text-decoration: none;
+    }
+}
+
+.iqra-coursecard-cover {
+    display: flex;
+    align-items: flex-end;
+    min-height: 2.75rem;
+    padding: 0.5rem 1rem;
+}
+
+.iqra-tone-brand {
+    background: var(--iqra-tint);
+    color: var(--iqra-brand);
+}
+
+.iqra-tone-blue {
+    background: var(--iqra-blue-bg);
+    color: var(--iqra-blue-ink);
+}
+
+.iqra-tone-amber {
+    background: var(--iqra-amber-bg);
+    color: var(--iqra-amber-ink);
+}
+
+.iqra-coursecard-category {
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.iqra-coursecard-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+}
+
+.iqra-coursecard .iqra-coursecard-name {
+    color: var(--iqra-ink);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.iqra-coursecard-progress {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.iqra-meter {
+    display: flex;
+    flex: 1 1 auto;
+    height: 0.375rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--iqra-line);
+}
+
+.iqra-meter-bar {
+    background: var(--iqra-brand);
+}
+
+.iqra-coursecard-percent {
+    color: var(--iqra-muted);
+    font-size: 0.875rem;
 }
 
 .dir-rtl .iqra-flip-rtl {

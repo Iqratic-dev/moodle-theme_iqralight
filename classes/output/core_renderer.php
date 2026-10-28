@@ -106,6 +106,9 @@ class core_renderer extends \theme_boost\output\core_renderer {
             'date' => userdate(time(), get_string('strftimedaydate', 'langconfig')),
             'saved' => stats::learner_sentence((int) $USER->id),
             'resume' => resume::for_user((int) $USER->id),
+            'courses' => $courses = \theme_iqralight\local\mycourses::for_user((int) $USER->id),
+            'hascourses' => !empty($courses),
+            'allcoursesurl' => (new \moodle_url('/my/courses.php'))->out(false),
         ]);
         return $home . $output;
     }

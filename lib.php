@@ -36,6 +36,8 @@ function theme_iqralight_get_main_scss_content($theme) {
 
     $scss = file_get_contents($CFG->dirroot . '/theme/boost/scss/preset/default.scss');
     $scss .= "\n" . file_get_contents(__DIR__ . '/scss/iqra.scss');
+    // Components: buttons, fields, labels, blocks and the learner's home (one system everywhere).
+    $scss .= "\n" . file_get_contents(__DIR__ . '/scss/iqra-ui.scss');
     // Tablets and computers: the same design, given room (mobile first, wider layouts on top).
     $scss .= "\n" . file_get_contents(__DIR__ . '/scss/iqra-desktop.scss');
     // Light icon fonts: declared after Boost's full faces so that they take precedence.

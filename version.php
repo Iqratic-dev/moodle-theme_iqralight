@@ -25,8 +25,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_iqralight';
-$plugin->version   = 2026102800;
-$plugin->release   = '0.18.0';
+$plugin->version   = 2026102900;
+$plugin->release   = '0.19.0';
 $plugin->maturity  = MATURITY_ALPHA;
 $plugin->requires  = 2025041400; // Moodle 5.0.
 $plugin->supported = [500, 503];

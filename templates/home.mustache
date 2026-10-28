@@ -23,6 +23,9 @@
     {
         "greeting": "Hello, Amina",
         "date": "Tuesday 28 October",
+        "hascourses": true,
+        "allcoursesurl": "#",
+        "courses": [{"name": "Road safety, level 1", "url": "#", "category": "Driving", "tone": "brand", "hasprogress": true, "percent": 60}],
         "saved": "Iqralight spared you 35 MB of data this month.",
         "resume": {
             "coursename": "French, level 1",
@@ -38,15 +41,41 @@
         }
     }
 }}
-<div class="iqra-hero{{#resume}} iqra-hero-with-resume{{/resume}}">
+<div class="iqra-home-top">
     <div class="iqra-greeting">
         <h1 class="iqra-greeting-title">{{greeting}}</h1>
         <p class="iqra-greeting-date">{{date}}</p>
-        {{#saved}}
-        <p class="iqra-saved">{{saved}}</p>
-        {{/saved}}
     </div>
-    {{#resume}}
-        {{> theme_iqralight/resume }}
-    {{/resume}}
+    {{#saved}}
+    <p class="iqra-saved">{{saved}}</p>
+    {{/saved}}
 </div>
+{{#resume}}
+    {{> theme_iqralight/resume }}
+{{/resume}}
+{{#hascourses}}
+<section class="iqra-mycourses" aria-labelledby="iqra-mycourses-title">
+    <div class="iqra-section-head">
+        <h2 id="iqra-mycourses-title" class="iqra-section-title">{{#str}}mycourses, theme_iqralight{{/str}}</h2>
+        <a class="iqra-section-link" href="{{allcoursesurl}}">{{#str}}allmycourses, theme_iqralight{{/str}}</a>
+    </div>
+    <ul class="iqra-coursegrid">
+        {{#courses}}
+        <li>
+            <a class="iqra-coursecard" href="{{url}}">
+                <span class="iqra-coursecard-cover iqra-tone-{{tone}}"><span class="iqra-coursecard-category">{{category}}</span></span>
+                <span class="iqra-coursecard-body">
+                    <span class="iqra-coursecard-name">{{name}}</span>
+                    {{#hasprogress}}
+                    <span class="iqra-coursecard-progress">
+                        <span class="iqra-meter" aria-hidden="true"><span class="iqra-meter-bar" style="width: {{percent}}%"></span></span>
+                        <span class="iqra-coursecard-percent">{{#str}}percentdone, theme_iqralight, {{percent}}{{/str}}</span>
+                    </span>
+                    {{/hasprogress}}
+                </span>
+            </a>
+        </li>
+        {{/courses}}
+    </ul>
+</section>
+{{/hascourses}}

@@ -34,19 +34,20 @@
     }
 }}
 <section class="iqra-resume" aria-labelledby="iqra-resume-title">
-    <p class="iqra-resume-kicker">{{kicker}}</p>
-    <h2 id="iqra-resume-title" class="iqra-resume-course">{{coursename}}</h2>
-    {{#activityname}}
-    <p class="iqra-resume-where"><span>{{sectionname}}</span> <span class="iqra-resume-activity">{{activityname}}</span></p>
-    {{/activityname}}
-    {{#hasprogress}}
-    <div class="iqra-progress" role="progressbar" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100" aria-label="{{#str}}progresslabel, theme_iqralight{{/str}}">
-        <div class="iqra-progress-bar" style="width: {{percent}}%"></div>
+    <div class="iqra-resume-main">
+        <p class="iqra-resume-kicker">{{kicker}}</p>
+        <h2 id="iqra-resume-title" class="iqra-resume-course">{{coursename}}</h2>
+        {{#activityname}}
+        <p class="iqra-resume-where">{{#sectionname}}<span>{{sectionname}}</span>, {{/sectionname}}<span class="iqra-resume-activity">{{activityname}}</span></p>
+        {{/activityname}}
     </div>
-    <p class="iqra-resume-progress">{{#str}}progress, theme_iqralight, { "done": {{done}}, "total": {{total}} }{{/str}}</p>
+    {{#hasprogress}}
+    <div class="iqra-resume-meter">
+        <div class="iqra-progress" role="progressbar" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100" aria-label="{{#str}}progresslabel, theme_iqralight{{/str}}">
+            <div class="iqra-progress-bar" style="width: {{percent}}%"></div>
+        </div>
+        <p class="iqra-resume-progress">{{#str}}progress, theme_iqralight, { "done": {{done}}, "total": {{total}} }{{/str}}</p>
+    </div>
     {{/hasprogress}}
-    <a class="iqra-resume-cta" href="{{url}}">
-        <span>{{ctalabel}}</span>
-        <svg class="iqra-flip-rtl" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
-    </a>
+    <a class="iqra-resume-cta" href="{{url}}">{{ctalabel}}</a>
 </section>

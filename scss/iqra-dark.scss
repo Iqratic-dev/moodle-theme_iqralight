@@ -49,6 +49,32 @@ $paper: #f7f8f7;
     color-scheme: dark;
     background-color: $dark-ground;
     color: $dark-ink;
+    --iqra-surface: #{$dark-surface};
+    --iqra-ground: #{$dark-ground};
+    --iqra-line: #{$dark-line};
+    --iqra-line-strong: #{$dark-muted};
+    --iqra-ink: #{$dark-ink};
+    --iqra-muted: #{$dark-muted};
+    --iqra-brand: #{$dark-link};
+    --iqra-tint: #{$dark-brand-tint};
+    --iqra-tint-strong: #{mix($iqra-brand, $dark-surface, 45%)};
+    --iqra-danger-bg: #3b1f1f;
+    --iqra-danger-ink: #f5b4b4;
+    --iqra-warning-bg: #3a2f14;
+    --iqra-warning-ink: #f3d28b;
+    --iqra-neutral-bg: #{$dark-surface-2};
+    --iqra-neutral-ink: #{$dark-ink};
+    --iqra-blue-bg: #1d2a3d;
+    --iqra-blue-ink: #9db8e8;
+    --iqra-amber-bg: #33291b;
+    --iqra-amber-ink: #e8c48a;
+
+    // The institution's logo is drawn for a light ground: it keeps one.
+    .navbar .logo {
+        padding: 0.125rem 0.375rem;
+        border-radius: 0.5rem;
+        background-color: #fff;
+    }
 
     @include iqra-dark-core;
 

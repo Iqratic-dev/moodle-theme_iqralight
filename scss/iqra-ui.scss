@@ -1,0 +1,241 @@
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+// Iqralight layer, compiled after Boost's default preset.
+// One system of components for every page (mockup "Accueil redessiné"): three button
+// styles, fields with a visible frame, due-date labels that always carry a word, flat
+// blocks, a compact calendar and a visible keyboard focus. Colours are variables, so
+// that the dark mode (iqra-dark.scss) redefines them all at once.
+
+body.iqra {
+    --iqra-surface: #fff;
+    --iqra-ground: #{$body-bg};
+    --iqra-line: #{$iqra-line};
+    --iqra-line-strong: #a7b8b2;
+    --iqra-ink: #{$body-color};
+    --iqra-muted: #{$iqra-muted};
+    --iqra-brand: #{$iqra-brand};
+    --iqra-tint: #{mix($iqra-brand, #fff, 12%)};
+    --iqra-tint-strong: #{mix($iqra-brand, #fff, 22%)};
+    --iqra-danger-bg: #fde8e8;
+    --iqra-danger-ink: #9b1c1c;
+    --iqra-warning-bg: #fef3c7;
+    --iqra-warning-ink: #8a4b08;
+    --iqra-neutral-bg: #e1e8e5;
+    --iqra-neutral-ink: #2a3733;
+    --iqra-blue-bg: #e6eef8;
+    --iqra-blue-ink: #1f4e99;
+    --iqra-amber-bg: #f7eedf;
+    --iqra-amber-ink: #7a4b12;
+}
+
+// Keyboard focus: always visible, never only a colour change.
+body.iqra :focus-visible {
+    outline: 3px solid var(--iqra-brand);
+    outline-offset: 3px;
+    box-shadow: none;
+}
+
+body.iqra a,
+body.iqra .btn {
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.iqra a,
+    body.iqra .btn {
+        transition: none;
+    }
+}
+
+// Buttons: filled (main action), tinted (other actions), text (minor actions).
+body.iqra .btn:not(.btn-icon):not(.btn-sm):not(.btn-link):not(.btn-close) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+}
+
+body.iqra .btn-primary {
+    font-weight: 700;
+}
+
+// Flat design: no shadow on any button.
+body.iqra .btn {
+    box-shadow: none;
+}
+
+body.iqra .btn-secondary,
+body.iqra .btn-outline-secondary,
+body.iqra .btn-outline-primary {
+    border-color: transparent;
+    background-color: var(--iqra-tint);
+    color: var(--iqra-brand);
+
+    &:hover,
+    &:focus,
+    &:active,
+    &.active,
+    &.show {
+        border-color: transparent;
+        background-color: var(--iqra-tint-strong);
+        color: var(--iqra-brand);
+    }
+}
+
+// Fields: a visible frame and a comfortable height.
+body.iqra .form-control:not(.form-control-sm),
+body.iqra .form-select:not(.form-select-sm),
+body.iqra .custom-select {
+    min-height: 2.75rem;
+    border: 1px solid var(--iqra-line-strong);
+    border-radius: 0.75rem;
+    background-color: var(--iqra-surface);
+    color: var(--iqra-ink);
+}
+
+// Labels: a word and a colour, never the colour alone.
+body.iqra .badge {
+    padding: 0.2rem 0.625rem;
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+// Bootstrap's colour utilities are !important: these labels must override them.
+/* stylelint-disable declaration-no-important */
+body.iqra .badge.bg-danger,
+body.iqra .badge.badge-danger {
+    background-color: var(--iqra-danger-bg) !important;
+    color: var(--iqra-danger-ink) !important;
+}
+
+body.iqra .badge.bg-warning,
+body.iqra .badge.badge-warning {
+    background-color: var(--iqra-warning-bg) !important;
+    color: var(--iqra-warning-ink) !important;
+}
+
+body.iqra .badge.bg-secondary,
+body.iqra .badge.bg-light,
+body.iqra .badge.badge-secondary {
+    background-color: var(--iqra-neutral-bg) !important;
+    color: var(--iqra-neutral-ink) !important;
+}
+
+// Empty states: one line with its message, without the large picture.
+body.iqra .block .empty-placeholder-image-lg,
+body.iqra .block [data-region="empty-message"] img,
+body.iqra .block [data-region="no-events-empty-message"] img {
+    display: none;
+}
+
+body.iqra .block [data-region="empty-message"],
+body.iqra .block [data-region="no-events-empty-message"] {
+    text-align: start !important;
+}
+/* stylelint-enable declaration-no-important */
+
+body.iqra .block [data-region="empty-message"] p,
+body.iqra .block [data-region="no-events-empty-message"] p {
+    margin-top: 0.25rem;
+    color: var(--iqra-muted);
+}
+
+// Blocks: flat white surfaces with a hairline, no shadow.
+body.iqra .block.card {
+    border: 1px solid var(--iqra-line);
+    border-radius: 1rem;
+    background-color: var(--iqra-surface);
+    box-shadow: none;
+}
+
+body.iqra .block .card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+// Calendar block: compact days, today and event days stand out.
+body.iqra .block_calendar_month .calendarmonth {
+    td,
+    th {
+        padding: 0.125rem;
+    }
+
+    td.day {
+        height: 2.5rem;
+        vertical-align: middle;
+    }
+
+}
+
+// Each day holds a box sized for listing events (Boost: 11.5em, set under #region-main),
+// useless in this small calendar block. The full calendar page keeps it.
+body.iqra #region-main .block_calendar_month .calendarwrapper td > div {
+    height: auto;
+}
+
+// Top bar: the current page is a tinted pill rather than an underline.
+body.iqra .navbar .primary-navigation .navigation .nav-link {
+    height: auto;
+    min-height: 2.75rem;
+    margin-block: 0.5rem;
+    padding-inline: 0.875rem;
+    border-bottom: 0;
+    border-radius: 0.625rem;
+    color: var(--iqra-muted);
+
+    &.active,
+    &[aria-current="true"] {
+        background-color: var(--iqra-tint);
+        color: var(--iqra-ink);
+        font-weight: 600;
+    }
+}
+
+// The connection mode chip: a tinted control, like the other secondary actions.
+body.iqra .iqra-modechip {
+    border-color: transparent;
+    background-color: var(--iqra-tint);
+    color: var(--iqra-brand);
+}
+
+// Home and My courses: a flat page on the ground colour, without Boost's white frame
+// (html raises the specificity above the dark mode's surface rule).
+html body.iqra.pagelayout-mydashboard,
+html body.iqra.pagelayout-mycourses {
+    #page.drawers .main-inner {
+        background-color: transparent;
+        box-shadow: none;
+    }
+
+    // Blocks line up with the Resume band and the course cards.
+    :has(> #block-region-content) {
+        padding-inline: 0;
+    }
+}
+
+// Phones: main actions are 48 px high (Android's guideline).
+@include media-breakpoint-down(md) {
+    body.iqra .btn-primary:not(.btn-sm),
+    body.iqra .btn-secondary:not(.btn-sm),
+    body.iqra .form-control:not(.form-control-sm),
+    body.iqra .form-select:not(.form-select-sm) {
+        min-height: 3rem;
+    }
+}
