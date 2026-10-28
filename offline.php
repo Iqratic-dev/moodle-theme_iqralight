@@ -46,8 +46,10 @@ $context = [
     'message' => get_string('offline_message', 'theme_iqralight'),
     'retry' => get_string('offline_retry', 'theme_iqralight'),
     'reading' => (bool) get_config('theme_iqralight', 'offlinereading'),
-    'indexurl' => json_encode(rtrim($CFG->wwwroot, '/') . '/theme/iqralight/offline-index.json',
-        JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT),
+    'indexurl' => json_encode(
+        rtrim($CFG->wwwroot, '/') . '/theme/iqralight/offline-index.json',
+        JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+    ),
     'keptlabel' => get_string('offline_kept', 'theme_iqralight'),
     'nonelabel' => get_string('offline_none', 'theme_iqralight'),
 ];

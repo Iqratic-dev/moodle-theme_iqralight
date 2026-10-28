@@ -170,6 +170,28 @@ if ($ADMIN->fulltree) {
     ));
 
     $settings->add($page);
+
+    // Advanced: the administrator's own SCSS, as in Boost.
+    $page = new admin_settingpage('theme_iqralight_advanced', get_string('advanced', 'theme_iqralight'));
+    $setting = new admin_setting_scsscode(
+        'theme_iqralight/scsspre',
+        get_string('rawscsspre', 'theme_iqralight'),
+        get_string('rawscsspre_desc', 'theme_iqralight'),
+        '',
+        PARAM_RAW
+    );
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+    $setting = new admin_setting_scsscode(
+        'theme_iqralight/scss',
+        get_string('rawscss', 'theme_iqralight'),
+        get_string('rawscss_desc', 'theme_iqralight'),
+        '',
+        PARAM_RAW
+    );
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+    $settings->add($page);
 }
 
 $ADMIN->add('themes', new admin_externalpage(

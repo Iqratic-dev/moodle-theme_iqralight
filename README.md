@@ -13,6 +13,21 @@ covered by the continuous integration (GitHub Actions) for both databases.
 
 **Version 0.16.1 (alpha)** — Moodle 5.0 and later. Target: Moodle 5.3 LTS.
 
+## Layout on every screen
+
+Mobile first: the phone design is the base. From 768 px, the learner's home and My
+courses use the width of the screen up to 1200 px, with the greeting beside the
+*Resume* card and the home blocks in two columns from 1200 px; course pages keep a
+reading width of about 75 characters a line. The site logo is shown in the top bar,
+even when only the main logo has been uploaded.
+
+## Your own SCSS
+
+*Advanced* tab of the theme settings: *Raw initial SCSS* (variables, compiled before the
+theme, for example `$border-radius: 0.5rem;` or `$iqra-wide-maxwidth: 1320px;`) and
+*Raw SCSS* (rules added after the theme's). Keep them light: every line is sent to
+every learner.
+
 ## Installation
 
 1. Unzip into `theme/iqralight` (the folder must be named `iqra`), or use

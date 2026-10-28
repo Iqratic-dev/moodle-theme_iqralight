@@ -1,0 +1,106 @@
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+// Iqralight layer, compiled after Boost's default preset.
+// Tablets and computers. Mobile first: the phone design is the base, and these rules
+// only give it room and structure from 768 px. Below that width nothing here applies.
+//
+// Course content keeps Boost's reading width (about 75 characters a line); the learner's
+// home and My courses use the screen, up to $iqra-wide-maxwidth.
+
+$iqra-wide-maxwidth: 1200px !default;
+
+@include media-breakpoint-up(md) {
+    // Home and My courses: wide pages.
+    body.iqra.pagelayout-mydashboard,
+    body.iqra.pagelayout-mycourses {
+        #page.drawers .main-inner,
+        #page.drawers .footer-popover,
+        .header-maxwidth {
+            max-width: $iqra-wide-maxwidth;
+        }
+
+        .secondary-navigation .navigation .nav-tabs {
+            max-width: $iqra-wide-maxwidth;
+        }
+    }
+
+    // The greeting and the Resume card side by side: the card is the focal point.
+    .iqra-hero-with-resume {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+        gap: 2rem;
+        align-items: center;
+        margin-block-end: 2rem;
+
+        .iqra-greeting,
+        .iqra-resume {
+            margin: 0;
+        }
+    }
+
+    .iqra-greeting-title {
+        font-size: 2rem;
+        letter-spacing: -0.01em;
+    }
+
+    .iqra-resume {
+        padding: 1.75rem;
+    }
+
+    .iqra-resume-course {
+        font-size: 1.5rem;
+    }
+
+    // Top bar: the logo at a readable size, and more air between links.
+    .navbar.fixed-top {
+        .logo {
+            max-height: 2.25rem;
+            width: auto;
+        }
+
+        .primary-navigation .nav-link {
+            padding-inline: 0.875rem;
+            font-size: 0.9375rem;
+        }
+    }
+
+    #page-header h1,
+    .page-context-header h1 {
+        font-size: 1.875rem;
+        letter-spacing: -0.01em;
+    }
+}
+
+@include media-breakpoint-up(xl) {
+    // Home blocks in two columns, aligned on their top edge. Not while editing, where
+    // blocks are dragged in a single column.
+    body.iqra.pagelayout-mydashboard:not(.editing) #block-region-content {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem;
+        align-items: start;
+
+        > .block {
+            margin: 0;
+        }
+
+        // Moodle places empty anchors between blocks (targets of "Skip block" links): they
+        // stay in the page for keyboard users but take no cell of the grid.
+        > span {
+            position: absolute;
+        }
+    }
+}

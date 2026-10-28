@@ -26,6 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['activitynav'] = 'التنقل بين الأنشطة';
+$string['advanced'] = 'متقدم';
 $string['appearance'] = 'المظهر';
 $string['audit'] = 'Iqralight: تدقيق الخفة';
 $string['audit_activity'] = 'النشاط';
@@ -229,6 +230,10 @@ $string['profiles_nocategory'] = 'لا توجد فئة دورات بعد.';
 $string['profilessaved'] = 'تم حفظ الملفات.';
 $string['progress'] = '⁦{$a->done}⁩ من ⁦{$a->total}⁩ مكتملة';
 $string['progresslabel'] = 'التقدم في الدورة';
+$string['rawscss'] = 'SCSS خام';
+$string['rawscss_desc'] = 'قواعد SCSS أو CSS تُضاف بعد قواعد القالب. اجعلها خفيفة: كل سطر يُرسل إلى كل متعلّم.';
+$string['rawscsspre'] = 'SCSS أولي خام';
+$string['rawscsspre_desc'] = 'متغيرات SCSS تُترجم قبل القالب. استخدم هذا الحقل لتغيير متغير، مثل $border-radius: 0.5rem;';
 $string['region-side-pre'] = 'يمين';
 $string['removeoffline'] = 'إزالة من هذا الجهاز';
 $string['report_anonymous'] = 'العدّاد مجهول الهوية: تُحفظ مجاميع الموقع فقط، ولا يرى المتعلّمون مجموعًا شخصيًا.';

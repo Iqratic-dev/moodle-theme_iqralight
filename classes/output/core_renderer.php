@@ -54,6 +54,27 @@ class core_renderer extends \theme_boost\output\core_renderer {
     }
 
     /**
+     * The logo of the top bar: the compact logo, or else the main logo, so that a site that
+     * only uploaded its main logo (as the setup wizard does) still shows it.
+     *
+     * @param int $maxwidth
+     * @param int $maxheight
+     * @return \moodle_url|false
+     */
+    public function get_compact_logo_url($maxwidth = 300, $maxheight = 300) {
+        return parent::get_compact_logo_url($maxwidth, $maxheight) ?: $this->get_logo_url(null, 100);
+    }
+
+    /**
+     * Whether the top bar shows the logo.
+     *
+     * @return bool
+     */
+    public function should_display_navbar_logo() {
+        return !empty($this->get_compact_logo_url());
+    }
+
+    /**
      * Adds the connection mode chip to the top bar, where Moodle places plugin items.
      *
      * Iqralight inherits Boost's layouts unchanged, for every Moodle version; it only adds its
@@ -82,6 +103,7 @@ class core_renderer extends \theme_boost\output\core_renderer {
         }
         $home = $this->render_from_template('theme_iqralight/home', [
             'greeting' => get_string('greeting', 'theme_iqralight', format_string($USER->firstname)),
+            'date' => userdate(time(), get_string('strftimedaydate', 'langconfig')),
             'saved' => stats::learner_sentence((int) $USER->id),
             'resume' => resume::for_user((int) $USER->id),
         ]);

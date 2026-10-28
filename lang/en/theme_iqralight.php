@@ -26,6 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['activitynav'] = 'Activity navigation';
+$string['advanced'] = 'Advanced';
 $string['appearance'] = 'Appearance';
 $string['audit'] = 'Iqralight: lightness audit';
 $string['audit_activity'] = 'Activity';
@@ -229,6 +230,10 @@ $string['profiles_nocategory'] = 'There is no course category yet.';
 $string['profilessaved'] = 'The profiles have been saved.';
 $string['progress'] = '{$a->done} of {$a->total} done';
 $string['progresslabel'] = 'Course progress';
+$string['rawscss'] = 'Raw SCSS';
+$string['rawscss_desc'] = 'SCSS or CSS rules, added after the theme\'s own rules. Keep them light: every line is sent to every learner.';
+$string['rawscsspre'] = 'Raw initial SCSS';
+$string['rawscsspre_desc'] = 'SCSS variables, compiled before the theme. Use it to change a variable, for example $border-radius: 0.5rem;';
 $string['region-side-pre'] = 'Right';
 $string['removeoffline'] = 'Remove from this device';
 $string['report_anonymous'] = 'The counter is anonymous: only site totals are kept, learners do not see a personal total.';

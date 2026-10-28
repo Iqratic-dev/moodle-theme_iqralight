@@ -36,6 +36,8 @@ function theme_iqralight_get_main_scss_content($theme) {
 
     $scss = file_get_contents($CFG->dirroot . '/theme/boost/scss/preset/default.scss');
     $scss .= "\n" . file_get_contents(__DIR__ . '/scss/iqra.scss');
+    // Tablets and computers: the same design, given room (mobile first, wider layouts on top).
+    $scss .= "\n" . file_get_contents(__DIR__ . '/scss/iqra-desktop.scss');
     // Light icon fonts: declared after Boost's full faces so that they take precedence.
     $scss .= "\n" . file_get_contents(__DIR__ . '/scss/iqra-icons.scss');
     // Dark mode: generated overrides of Moodle's fixed colours, then the dark scope.
@@ -47,7 +49,8 @@ function theme_iqralight_get_main_scss_content($theme) {
 /**
  * Returns the variables injected before the main SCSS.
  *
- * Only the brand colour is configurable: every other shade is derived from it.
+ * The brand colour is configurable and every other shade is derived from it; the
+ * administrator's own variables (raw initial SCSS) are added last.
  *
  * @param theme_config $theme The theme config object.
  * @return string
@@ -72,6 +75,11 @@ function theme_iqralight_get_pre_scss($theme) {
     $scss .= '$card-border-radius: 1.125rem;' . "\n";
     $scss .= '$card-border-color: #E1E8E5;' . "\n";
     $scss .= '$link-color: ' . $brand . ";\n";
+    $scss .= '$font-size-base: 1rem;' . "\n";
+    // Variables set by the administrator come last, so that they can change any of the above.
+    if (!empty($theme->settings->scsspre)) {
+        $scss .= "\n" . $theme->settings->scsspre . "\n";
+    }
     return $scss;
 }
 
@@ -82,7 +90,7 @@ function theme_iqralight_get_pre_scss($theme) {
  * @return string
  */
 function theme_iqralight_get_extra_scss($theme) {
-    return '';
+    return $theme->settings->scss ?? '';
 }
 
 /**

@@ -22,6 +22,7 @@
     Example context (json):
     {
         "greeting": "Hello, Amina",
+        "date": "Tuesday 28 October",
         "saved": "Iqralight spared you 35 MB of data this month.",
         "resume": {
             "coursename": "French, level 1",
@@ -37,12 +38,15 @@
         }
     }
 }}
-<div class="iqra-greeting">
-    <h1 class="iqra-greeting-title">{{greeting}}</h1>
-    {{#saved}}
-    <p class="iqra-saved">{{saved}}</p>
-    {{/saved}}
+<div class="iqra-hero{{#resume}} iqra-hero-with-resume{{/resume}}">
+    <div class="iqra-greeting">
+        <h1 class="iqra-greeting-title">{{greeting}}</h1>
+        <p class="iqra-greeting-date">{{date}}</p>
+        {{#saved}}
+        <p class="iqra-saved">{{saved}}</p>
+        {{/saved}}
+    </div>
+    {{#resume}}
+        {{> theme_iqralight/resume }}
+    {{/resume}}
 </div>
-{{#resume}}
-    {{> theme_iqralight/resume }}
-{{/resume}}
